@@ -1,46 +1,54 @@
 const sql = require("./db.js");
 
 // constructor
-const Tutorial = function(tutorial) {
-  this.title = tutorial.title;
-  this.description = tutorial.description;
-  this.published = tutorial.published;
+const Mymodel = function(mymodel) {
+  this.smiles = myserver.smiles;
+  this.MW = myserver.MW;
+  this.HBA1 = myserver.HBA1;
+  this.HBA2 = myserver.HBA2;
+  this.HBD = myserver.HBD;
+  this.SlogP = myserver.SlogP;
+  this.TPSA = myserver.TPSA;
+  this.RotB = myserver.RotB;
+  this.pdbqtText = myserver.pdbqtText;
 };
 
-Tutorial.create = (newTutorial, result) => {
-  sql.query("INSERT INTO tutorials SET ?", newTutorial, (err, res) => {
+Mymodel.getAllColumns = (MW1, MW2, HBA11, result) => {
+  let query = `SELECT id, smiles FROM pdbqtData where MW between ${MW1} and ${MW2} limit 2`;
+
+  sql.query(query, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(err, null);
+      result(null, err);
       return;
     }
 
-    console.log("created tutorial: ", { id: res.insertId, ...newTutorial });
-    result(null, { id: res.insertId, ...newTutorial });
+    console.log(res);
+    result(null,res);
   });
 };
 
-Tutorial.findById = (id, result) => {
-  sql.query(`SELECT * FROM tutorials WHERE id = ${id}`, (err, res) => {
+Mymodel.getAllLimit = (limitcount, result) => {
+  let query = `SELECT id, smiles FROM pdbqtData limit ${limitcount}`;
+
+  if (limitcount <= 0) {
+    result(null, "limitcount must be greater than 0");
+  };
+
+  sql.query(query, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(err, null);
+      result(null, err);
       return;
     }
 
-    if (res.length) {
-      console.log("found tutorial: ", res[0]);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found Tutorial with the id
-    result({ kind: "not_found" }, null);
+    console.log(res);
+    result(null,res);
   });
 };
 
-Tutorial.getAll = (title, result) => {
-  let query = "SELECT * FROM tutorials";
+Mymodel.getAll = (title, result) => {
+  let query = "SELECT id, smiles FROM pdbqtData limit 10";
 
   if (title) {
     query += ` WHERE title LIKE '%${title}%'`;
@@ -53,77 +61,10 @@ Tutorial.getAll = (title, result) => {
       return;
     }
 
-    console.log("tutorials: ", res);
+  
     result(null, res);
   });
 };
 
-Tutorial.getAllPublished = result => {
-  sql.query("SELECT * FROM tutorials WHERE published=true", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
 
-    console.log("tutorials: ", res);
-    result(null, res);
-  });
-};
-
-Tutorial.updateById = (id, tutorial, result) => {
-  sql.query(
-    "UPDATE tutorials SET title = ?, description = ?, published = ? WHERE id = ?",
-    [tutorial.title, tutorial.description, tutorial.published, id],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-
-      if (res.affectedRows == 0) {
-        // not found Tutorial with the id
-        result({ kind: "not_found" }, null);
-        return;
-      }
-
-      console.log("updated tutorial: ", { id: id, ...tutorial });
-      result(null, { id: id, ...tutorial });
-    }
-  );
-};
-
-Tutorial.remove = (id, result) => {
-  sql.query("DELETE FROM tutorials WHERE id = ?", id, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    if (res.affectedRows == 0) {
-      // not found Tutorial with the id
-      result({ kind: "not_found" }, null);
-      return;
-    }
-
-    console.log("deleted tutorial with id: ", id);
-    result(null, res);
-  });
-};
-
-Tutorial.removeAll = result => {
-  sql.query("DELETE FROM tutorials", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log(`deleted ${res.affectedRows} tutorials`);
-    result(null, res);
-  });
-};
-
-module.exports = Tutorial;
+module.exports = Mymodel;

@@ -1,5 +1,40 @@
 const Tutorial = require("../models/tutorial.model.js");
 
+
+exports.findAllColumns = (req, res) => {
+  Tutorial.getAllColumns(req.params.MW1, req.params.MW2, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred."
+      });
+    
+    else {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.send(data);
+    }
+
+  });
+};
+
+// find all limit
+exports.findAllLimit = (req, res) => {
+  Tutorial.getAllLimit(req.params.limitcount, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred."
+      });
+    
+    else {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.send(data);
+    }
+
+  });
+};
+
+
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
