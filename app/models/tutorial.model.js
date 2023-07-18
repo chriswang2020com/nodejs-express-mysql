@@ -13,8 +13,17 @@ const Mymodel = function(mymodel) {
   this.pdbqtText = myserver.pdbqtText;
 };
 
-Mymodel.getAllColumns = (MW1, MW2, HBA11, result) => {
-  let query = `SELECT id, smiles FROM pdbqtData where MW between ${MW1} and ${MW2} limit 2`;
+Mymodel.getAllColumns = (MW1, MW2, HBA1,HBA2, result) => {
+  let query = `SELECT id, smiles FROM pdbqtData where`;
+
+  if (MW1 != 1000 || MW2 != 1000) {
+    query += ` MW BETWEEN ${MW1} AND ${MW2}`;
+  }
+  if (HBA1 != 1000 || HBA2 != 1000) {
+    query += ` HBA BETWEEN ${HBA1} AND ${HBA2}`;
+  }
+  query+=` limit 10`;
+
 
   sql.query(query, (err, res) => {
     if (err) {

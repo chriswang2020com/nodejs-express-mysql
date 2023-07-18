@@ -1,21 +1,31 @@
 const Tutorial = require("../models/tutorial.model.js");
+const jsonfile = require('jsonfile')
 
 
 exports.findAllColumns = (req, res) => {
-  Tutorial.getAllColumns(req.params.MW1, req.params.MW2, (err, data) => {
+  Tutorial.getAllColumns(
+    req.params.MW1, req.params.MW2, req.params.HBA1,req.params.HBA2,
+    (err, data) => {
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred."
       });
-    
     else {
       res.setHeader("Access-Control-Allow-Origin", "*");
+      // download link
+      const file = './download/new.json'
+      jsonfile.writeFile(file, data, function (err) {
+        if (err) console.error(err)
+      })
       res.send(data);
     }
-
   });
 };
+
+// exports.downloadLimit = (req, res) => {
+//   Tutorial.downloadLimit(req.params.limitcount, (err, data) => {
+    
 
 // find all limit
 exports.findAllLimit = (req, res) => {
@@ -28,6 +38,11 @@ exports.findAllLimit = (req, res) => {
     
     else {
       res.setHeader("Access-Control-Allow-Origin", "*");
+      // download link
+      const file = './download/new.json'
+      jsonfile.writeFile(file, data, function (err) {
+        if (err) console.error(err)
+      })
       res.send(data);
     }
 
