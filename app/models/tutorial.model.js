@@ -13,16 +13,31 @@ const Mymodel = function(mymodel) {
   this.pdbqtText = myserver.pdbqtText;
 };
 
-Mymodel.getAllColumns = (MW1, MW2, HBA1,HBA2, result) => {
-  let query = `SELECT id, smiles FROM pdbqtData where`;
+Mymodel.getAllColumns = (MW1, MW2, HBA11,HBA12, HBA21,HBA22,SlogP1,SlogP2,TPSA1,TPSA2,RotB1,RotB2,
+   result) => {
+  let query = `SELECT id, smiles FROM pdbqtData where id != 1 `;
 
   if (MW1 != 1000 || MW2 != 1000) {
-    query += ` MW BETWEEN ${MW1} AND ${MW2}`;
+    query += ` AND MW BETWEEN ${MW1} AND ${MW2}`;
   }
-  if (HBA1 != 1000 || HBA2 != 1000) {
-    query += ` HBA BETWEEN ${HBA1} AND ${HBA2}`;
+  if (HBA11 != 1000 || HBA12 != 1000) {
+    query += ` AND HBA1 BETWEEN ${HBA11} AND ${HBA12}`;
   }
-  query+=` limit 10`;
+  if (HBA21 != 1000 || HBA22 != 1000) {
+    query += ` AND HBA2 BETWEEN ${HBA21} AND ${HBA22}`;
+  }
+  if (SlogP1 != 1000 || SlogP2 != 1000) {
+    query += ` AND SlogP BETWEEN ${SlogP1} AND ${SlogP2}`;
+  }
+  if (TPSA1 != 1000 || TPSA2 != 1000) {
+    query += ` AND TPSA BETWEEN ${TPSA1} AND ${TPSA2}`;
+  }
+  if (RotB1 != 1000 || RotB2 != 1000) {
+    query += ` AND RotB BETWEEN ${RotB1} AND ${RotB2}`;
+  }
+  
+
+  query+=` limit 5`;
 
 
   sql.query(query, (err, res) => {

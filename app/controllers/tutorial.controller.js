@@ -4,7 +4,8 @@ const jsonfile = require('jsonfile')
 
 exports.findAllColumns = (req, res) => {
   Tutorial.getAllColumns(
-    req.params.MW1, req.params.MW2, req.params.HBA1,req.params.HBA2,
+    req.params.MW1, req.params.MW2, req.params.HBA11,req.params.HBA12, req.params.HBA21,req.params.HBA22,
+    req.params.SlogP1,req.params.SlogP2,req.params.TPSA1,req.params.TPSA2,req.params.RotB1,req.params.RotB2,
     (err, data) => {
     if (err)
       res.status(500).send({
@@ -14,10 +15,10 @@ exports.findAllColumns = (req, res) => {
     else {
       res.setHeader("Access-Control-Allow-Origin", "*");
       // download link
-      const file = './download/new.json'
-      jsonfile.writeFile(file, data, function (err) {
-        if (err) console.error(err)
-      })
+      // const file = './download/new.json'
+      // jsonfile.writeFile(file, data, function (err) {
+      //   if (err) console.error(err)
+      // })
       res.send(data);
     }
   });
