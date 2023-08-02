@@ -1,7 +1,7 @@
 Docker containerize
 port is on 4735
 ### sudo docker build -t nodejsimage .
-### sudo docker run -p 4735:4735 -d nodejsimage
+### sudo docker-compose up
 
 
 # Node.js Rest APIs with Express & MySQL example
