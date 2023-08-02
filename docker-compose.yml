@@ -6,6 +6,9 @@ services:
     image: nodejsimage
     container_name: backend
     ports:
-      - "4635:4735"
+      - "4735:4735"
     volumes:
       - ./app:/usr/src/apphome/app
+      - ./download:/usr/src/apphome/download
+      - ./server.js:/usr/src/apphome/server.js
+      
