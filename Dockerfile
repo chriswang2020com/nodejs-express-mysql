@@ -2,16 +2,14 @@
 FROM node:16
 
 # 设置工作目录
-WORKDIR /usr/src/app
+WORKDIR /usr/src/apphome
 
-# 复制package.json和pnp-lock.yaml (如果有) 到工作目录
+# 复制package.json到工作目录
 COPY package*.json ./
 
-# 使用npm安装pnpm
-RUN npm install -g pnpm
 
 # 安装项目依赖
-RUN pnpm install
+RUN npm install
 
 # 复制项目源代码到工作目录
 COPY . .
