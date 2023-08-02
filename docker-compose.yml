@@ -6,6 +6,6 @@ services:
     image: nodejsimage
     container_name: backend
     ports:
-      - "3000:3000"
+      - "4635:4735"
     volumes:
       - ./app:/usr/src/apphome/app
